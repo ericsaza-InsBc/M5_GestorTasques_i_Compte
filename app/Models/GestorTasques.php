@@ -38,7 +38,7 @@ class GestorTasques {
             }
         }
         if ($isDeleted) {
-            throw new Exception("No s'ha trobat la tasca amb el títol $titol");
+            throw new TascaNotExistException("No s'ha trobat la tasca amb el títol $titol");
         }
     }
 
@@ -62,5 +62,13 @@ class GestorTasques {
      */
     public function llistarTasques(): array {
         return $this->tasques;
+    }
+
+}
+
+
+class TascaNotExistException extends Exception {
+    public function __construct($message) {
+        parent::__construct($message);
     }
 }

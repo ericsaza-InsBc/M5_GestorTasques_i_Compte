@@ -37,4 +37,19 @@ class Tasca
     {
         return $this->titol;
     }
+
+    public function getDescripcio(): String
+    {
+        return $this->descripcio;
+    }
+
+    public function getDataLímit(): Date
+    {
+        return $this->dataLímit;
+    }
+
+    public function getEstat(): String
+    {
+        return $this->estat;
+    }
 }
