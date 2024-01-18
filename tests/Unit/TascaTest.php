@@ -17,12 +17,23 @@ class TascaTest extends TestCase
     public function GestorTasques_TC01(): void
     {
 
-        $tasca = new Tasca("Tasca1", "Descripció de la tasca 1", new Date("2021-10-10"), "Pendent");
-        $this->assertEquals("Tasca1", $tasca->getTitol());
+        $tasca = new Tasca("Tasca 1", "Descripció de la tasca 1", new Date("2021-10-10"), "Pendent");
+        $this->assertEquals("Tasca 1", $tasca->getTitol());
         $this->assertEquals("Descripció de la tasca 1", $tasca->getDescripcio());
 
         $this->assertEquals($tasca->getEstat(), "Pendent");
-        $this->
-        assertTrue($tasca->getEstat() == "Pendent");
+        $this->assertTrue($tasca->getEstat() == "Pendent");
+    }
+
+    /**
+     * Test KO
+     * @test
+     * @return void
+     */
+    public function GestorTasques_TC02(): void
+    {
+
+        $tasca = new Tasca("Tasca 2", "Descripció de la tasca 1", new Date("2024-02-10"), "Acabat");
+        $this->assertEquals("Tasca 1", $tasca->getTitol());
     }
 }
