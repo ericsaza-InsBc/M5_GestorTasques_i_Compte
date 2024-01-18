@@ -18,8 +18,8 @@ class GestorTasques {
      * @param String $estat
      * @return void
      */
-    public function afegirTasca(String $titol, String $descripcio, DateTime $dataLímit, String $estat) {
-        $tasca = new Tasca($titol, $descripcio, $dataLímit, $estat);
+    public function afegirTasca(String $titol, String $descripcio, DateTime $dataLímit) {
+        $tasca = new Tasca($titol, $descripcio, $dataLímit, "Pendent");
         $this->tasques[] = $tasca;
     }
 

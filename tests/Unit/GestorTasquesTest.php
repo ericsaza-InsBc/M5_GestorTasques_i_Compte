@@ -2,11 +2,12 @@
 
 namespace Tests\Unit;
 
-use Illuminate\Support\Facades\Date;
 use PHPUnit\Framework\TestCase;
 use App\Models\Tasca;
 use App\Models\GestorTasques;
-use DateTime; // Add this line to import the DateTime class
+use App\Models\TascaNotExistException;
+use DateTime;
+use Exception;
 
 class GestorTasquesTest extends TestCase
 {
@@ -28,7 +29,7 @@ class GestorTasquesTest extends TestCase
     public function Test_gestorTasques_llistarGestorAmbTasques(): void
     {
         $gestorTasques = new GestorTasques();
-        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent");
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"));
 
         // Comprovar que el gestor de tasques no està buit
         $this->assertNotEmpty($gestorTasques->llistarTasques());
@@ -41,10 +42,10 @@ class GestorTasquesTest extends TestCase
     public function test_gestorTasques_validarGestor(): void
     {
         $gestorTasques = new GestorTasques();
-        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent");
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"));
         $this->assertEquals(1, count($gestorTasques->llistarTasques()));
 
-       $array = [new Tasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent")];
+       $array = [new Tasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Acabat")];
        $this->assertEquals($array, $gestorTasques->llistarTasques());
     }
 
@@ -54,12 +55,44 @@ class GestorTasquesTest extends TestCase
     public function test_gestorTasques_eliminarTasca(): void
     {
         $gestorTasques = new GestorTasques();
-        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent");
-        $gestorTasques->afegirTasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2021-06-02"), "En progres");
-        $gestorTasques->afegirTasca("Tasca 3", "Descripció de la tasca 3", new DateTime("2021-03-09"), "Acabat");
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"));
+        $gestorTasques->afegirTasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2021-06-02"));
+        $gestorTasques->afegirTasca("Tasca 3", "Descripció de la tasca 3", new DateTime("2021-03-09"));
         $this->assertEquals(3, count($gestorTasques->llistarTasques()));
         $gestorTasques->eliminarTasca("tasca 2");
         $this->assertEquals(2, count($gestorTasques->llistarTasques()));
+    }
+
+    /**
+     * Test KO per eliminar una tasca que no existeix
+     */
+    public function testKO_gestorTasques_eliminarTascaNoExisteix(): void
+    {
+        $gestorTasques = new GestorTasques();
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"));
+        $gestorTasques->afegirTasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2021-06-02"));
+        $gestorTasques->afegirTasca("Tasca 3", "Descripció de la tasca 3", new DateTime("2021-03-09"));
+        $this->assertEquals(3, count($gestorTasques->llistarTasques()));
+        try {
+            $gestorTasques->eliminarTasca("Tasca 4");
+            $this->fail("No s'ha llançat l'excepció");
+        } catch (TascaNotExistException $e) {
+            $this->assertEquals("No s'ha trobat la tasca amb el títol tasca 4", $e->getMessage());
+        }
+    }
+
+    /**
+     * Test per comprovar que es pot actualitzar l'estat d'una tasca
+     */
+    public function test_gestorTasques_actualitzarEstatTasca(): void
+    {
+        $gestorTasques = new GestorTasques();
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"));
+        $gestorTasques->afegirTasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2021-06-02"));
+        $gestorTasques->afegirTasca("Tasca 3", "Descripció de la tasca 3", new DateTime("2021-03-09"));
+        $gestorTasques->actualitzarEstatTasca("Tasca 2", "Acabat");
+        $this->assertEquals("Acabat", $gestorTasques->llistarTasques()[1]->getEstat());
+        $this->assertEquals("Pendent", $gestorTasques->llistarTasques()[0]->getEstat());
     }
 
 }
