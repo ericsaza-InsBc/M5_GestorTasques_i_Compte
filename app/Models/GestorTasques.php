@@ -32,7 +32,7 @@ class GestorTasques {
     public function eliminarTasca(String $titol) {
         $isDeleted = false;
         foreach ($this->tasques as $key => $tasca) {
-            if (strtolower($tasca->getTitol()) == $titol) {
+            if (strtolower($tasca->getTitol()) == strtolower($titol)) {
                 unset($this->tasques[$key]);
                 $idDeleted = true;
             }

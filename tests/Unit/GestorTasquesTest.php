@@ -41,11 +41,25 @@ class GestorTasquesTest extends TestCase
     public function test_gestorTasques_validarGestor(): void
     {
         $gestorTasques = new GestorTasques();
-        $gestorTasques->afegirTasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2021-10-10"), "En progres");
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent");
         $this->assertEquals(1, count($gestorTasques->llistarTasques()));
 
-       $array = [];
+       $array = [new Tasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent")];
        $this->assertEquals($array, $gestorTasques->llistarTasques());
+    }
+
+    /**
+     * Test per comprovar crear 3 tasques i eliminar-ne 1
+     */
+    public function test_gestorTasques_eliminarTasca(): void
+    {
+        $gestorTasques = new GestorTasques();
+        $gestorTasques->afegirTasca("Tasca 1", "Descripció de la tasca 1", new DateTime("2021-10-10"), "Pendent");
+        $gestorTasques->afegirTasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2021-06-02"), "En progres");
+        $gestorTasques->afegirTasca("Tasca 3", "Descripció de la tasca 3", new DateTime("2021-03-09"), "Acabat");
+        $this->assertEquals(3, count($gestorTasques->llistarTasques()));
+        $gestorTasques->eliminarTasca("tasca 2");
+        $this->assertEquals(2, count($gestorTasques->llistarTasques()));
     }
 
 }
