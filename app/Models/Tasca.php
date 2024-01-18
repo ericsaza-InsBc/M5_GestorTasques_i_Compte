@@ -2,21 +2,19 @@
 
 namespace App\Models;
 
-use Dotenv\Util\Str;
-use Illuminate\Support\Facades\Date;
 use Exception;
-
+use DateTime; // Add this line to import the DateTime class
 class Tasca
 {
 
     private String $titol;
     private String $descripcio;
-    private Date $dataLímit;
+    private DateTime $dataLímit; // Replace Date with DateTime
     private String $estat;
 
-    public function __construct(string $titol, string $descripcio, Date $dataLímit, String $estat)
+    public function __construct(string $titol, string $descripcio, DateTime $dataLímit, String $estat) // Replace Date with DateTime
     {
-        if ($titol == null ||$descripcio == null || $dataLímit == null || $estat == null) {
+        if ($titol == null || $descripcio == null || $dataLímit == null || $estat == null) {
             throw new Exception("El títol no pot ser null o buit");
         }
         $this->titol = $titol;
@@ -27,10 +25,13 @@ class Tasca
 
     public function __toString()
     {
-        return "Tasca{" . "titol=" . $this->titol . ", descripcio=" . $this->descripcio . ", dataLímit=" . $this->dataLímit . ", estat=" . $this->estat . '}';
+        return "Tasca:".$this->titol
+            ."\nDescripció:".$this->descripcio
+            ."\nData límit:".$this->dataLímit->format('Y-m-d'); // Fix the format method call
     }
 
-    public function setEstat(String $estat) {
+    public function setEstat(String $estat)
+    {
         $this->estat = $estat;
     }
     public function getTitol(): String
@@ -43,7 +44,7 @@ class Tasca
         return $this->descripcio;
     }
 
-    public function getDataLímit(): Date
+    public function getDataLímit(): DateTime // Replace Date with DateTime
     {
         return $this->dataLímit;
     }
