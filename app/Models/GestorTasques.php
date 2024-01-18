@@ -1,6 +1,6 @@
 <?php
 namespace App\Models;
-use Illuminate\Support\Facades\Date;
+use DateTime;
 use Exception;
 class GestorTasques {
 
@@ -14,11 +14,11 @@ class GestorTasques {
      * Funció que afegeix una tasca al gestor de tasques
      * @param String $titol
      * @param String $descripcio
-     * @param Date $dataLímit
+     * @param DateTime $dataLímit
      * @param String $estat
      * @return void
      */
-    public function afegirTasca(String $titol, String $descripcio, Date $dataLímit, String $estat) {
+    public function afegirTasca(String $titol, String $descripcio, DateTime $dataLímit, String $estat) {
         $tasca = new Tasca($titol, $descripcio, $dataLímit, $estat);
         $this->tasques[] = $tasca;
     }
