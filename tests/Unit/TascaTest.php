@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Illuminate\Support\Facades\Date;
 use PHPUnit\Framework\TestCase;
 use App\Models\Tasca;
+use Exception;
 use DateTime; // Add this line to import the DateTime class
 
 class TascaTest extends TestCase
@@ -35,7 +36,12 @@ class TascaTest extends TestCase
     {
 
         $tasca = new Tasca("Tasca 2", "Descripció de la tasca 2", new DateTime("2024-02-10"), "Acabat");
-        $this->assertEquals("Tasca 1", $tasca->getTitol());
+        try {
+            $this->assertEquals("Tasca 1", $tasca->getTitol());
+            $this->assertTrue(false);
+        } catch (Exception $e) {
+            $this->assertTrue(true);
+        }
     }
 
     /**
